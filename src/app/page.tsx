@@ -3,9 +3,11 @@ import { useCallback, useState } from "react";
 import Sidebar from "./component/Sidebar";
 import { AppState } from "./types/types";
 import WelcomeScreen from "./component/WelcomeScreen";
+import FileUploader from "./component/FileUploader";
 
 export default function Home() {
   const [appState, setAppState] = useState<AppState>(AppState.INITIAL);
+  const [uploadedFile, setUploadedFile] = useState(null);
 
   const handleNewChat = useCallback(() => {
     setAppState(AppState.UPLOADING);
@@ -14,7 +16,8 @@ export default function Home() {
   const renderContent = () => {
     switch (appState) {
       case AppState.INITIAL:
-        return <WelcomeScreen onNewChat={handleNewChat} />;
+      // return <WelcomeScreen onNewChat={handleNewChat} />;
+      // return <FileUploader />;
     }
   };
   return (
