@@ -14,18 +14,21 @@ export default function Home() {
 
   const handleNewChat = useCallback(() => {
     setAppState(AppState.UPLOADING);
+    setMessages([]);
+    setUploadedFile(null);
   }, []);
 
   const renderContent = () => {
     switch (appState) {
       case AppState.INITIAL:
-        // return <WelcomeScreen onNewChat={handleNewChat} />;
-        return <ChatWindow messages={messages} isLoading={isLoading} />;
+        return <WelcomeScreen onNewChat={handleNewChat} />;
+      case AppState.UPLOADING:
+        return <FileUploader />;
     }
   };
   return (
     <div className="flex h-screen w-full font-sans">
-      <Sidebar />
+      <Sidebar onNewChat={handleNewChat} />
       <main className="flex-1 flex flex-col bg-gray-800">
         {renderContent()}
       </main>
