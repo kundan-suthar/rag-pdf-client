@@ -1,10 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import { Message } from "../types/types";
 import ChatMessage from "./ChatMessage";
+import { Mic } from "lucide-react";
 
 interface ChatWindowProps {
   messages: Message[];
-  // onSendMessage: (text: string) => void;
+  inputValue: string;
+  onSendMessage: (text: string) => void;
+  onInputChange: (value: string) => void;
   isLoading: boolean;
 }
 
@@ -27,10 +30,11 @@ const SendIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
 
 const ChatWindow: React.FC<ChatWindowProps> = ({
   messages,
-  // onSendMessage,
+  inputValue,
+  onSendMessage,
   isLoading,
+  onInputChange,
 }) => {
-  const [inputValue, setInputValue] = useState("");
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -43,8 +47,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // onSendMessage(inputValue);
-    setInputValue("");
+    onSendMessage(inputValue);
+    onInputChange("");
+  };
+  const handleOnRecord = () => {
+    const speechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+    const recognition = new speechRecognition();
+    recognition.onresult = async function (e) {
+      const transcript = e.results[0][0].transcript;
+      onInputChange(transcript);
+      // setInputValue(transcript);
+      console.log("event: ", e);
+    };
+    recognition.start();
   };
 
   return (
@@ -87,7 +103,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         <form onSubmit={handleSubmit} className="flex items-center space-x-3">
           <textarea
             value={inputValue}
-            onChange={(e) => setInputValue(e.target.value)}
+            onChange={(e) => onInputChange(e.target.value)}
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -95,10 +111,17 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
               }
             }}
             placeholder="Type your message..."
-            rows={1}
+            rows={2}
             className="flex-1 p-3 bg-gray-700 rounded-lg resize-none focus:ring-2 focus:ring-indigo-500 focus:outline-none transition"
             disabled={isLoading}
           />
+          <button
+            type="button"
+            onClick={handleOnRecord}
+            className="hover:cursor-pointer p-3  bg-indigo-600 rounded-full text-white disabled:bg-gray-600 disabled:cursor-not-allowed hover:bg-indigo-700 transition-colors"
+          >
+            <Mic className="w-6 h-6" />
+          </button>
           <button
             type="submit"
             disabled={!inputValue.trim() || isLoading}

@@ -38,14 +38,6 @@ const ChatMessage: React.FC<ChatMessageProps> = ({ message }) => {
             isUser ? "bg-indigo-600" : "bg-gray-700"
           } rounded-lg p-3`}
         >
-          {message.filePreview &&
-            message.filePreview.type.startsWith("image/") && (
-              <img
-                src={message.filePreview.url}
-                alt="file preview"
-                className="rounded-lg mb-2 max-w-xs"
-              />
-            )}
           <p className="text-white whitespace-pre-wrap">{message.text}</p>
         </div>
       </div>
