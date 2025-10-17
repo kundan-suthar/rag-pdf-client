@@ -23,7 +23,11 @@ export default function Home() {
       case AppState.INITIAL:
         return <WelcomeScreen onNewChat={handleNewChat} />;
       case AppState.UPLOADING:
-        return <FileUploader />;
+        return (
+          <FileUploader onfileUpload={setAppState} setLoad={setIsLoading} />
+        );
+      case AppState.CHATTING:
+        return <ChatWindow messages={messages} isLoading={isLoading} />;
     }
   };
   return (
