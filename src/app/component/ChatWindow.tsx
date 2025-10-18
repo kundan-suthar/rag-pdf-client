@@ -64,7 +64,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full p-4">
+    <div className="flex flex-col h-dvh p-4">
       <div className="flex-1 overflow-y-auto pr-2 space-y-4">
         {messages.map((msg) => (
           <ChatMessage key={msg.id} message={msg} />
