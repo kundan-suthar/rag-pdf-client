@@ -46,15 +46,15 @@ export default function Home() {
         );
       }
 
-      const json = await res.json().catch(() => null);
+      const answer = await res.json().catch(() => null);
 
       const botMessage: Message = {
         id: `bot-${Date.now()}`,
         sender: "bot",
-        text: json.answer,
+        text: answer,
       };
       setMessages((prev) => [...prev, botMessage]);
-      const utterThis = new SpeechSynthesisUtterance(json.answer);
+      const utterThis = new SpeechSynthesisUtterance(answer);
       window.speechSynthesis.speak(utterThis);
     } catch (error) {
       console.error("Error from opnen AI  API:", error);
@@ -73,7 +73,6 @@ export default function Home() {
     switch (appState) {
       case AppState.INITIAL:
         return <WelcomeScreen onNewChat={handleNewChat} />;
-
       case AppState.UPLOADING:
         return (
           <FileUploader onfileUpload={setAppState} setLoad={setIsLoading} />

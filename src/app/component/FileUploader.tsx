@@ -43,15 +43,14 @@ const FileUploader: React.FC<FileUploadProp> = ({ onfileUpload, setLoad }) => {
 
     const formData = new FormData();
     // key 'file' - adjust server-side if needed
-    formData.append("file_upload", file);
+    formData.append("fileUpload", file);
     // add any additional fields here, e.g. metadata
     //  formData.append("uploadedAt", new Date().toISOString());
 
     try {
-      const endpoint = "http://127.0.0.1:8000/upload";
       setUploading(true);
       setLoad(true);
-      const res = await fetch(endpoint, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/upload`, {
         method: "POST",
         body: formData,
       });
